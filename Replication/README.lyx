@@ -1,0 +1,1168 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing onehalf
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "linkcolor=[rgb]{0,0,0.6},citecolor=[rgb]{0,0,0.6},urlcolor=[rgb]{0,0,0.6}"
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 3cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Data and Code Material for 
+\begin_inset Quotes eld
+\end_inset
+
+Entry Barriers, Idiosyncratic Distortions, and the Firm Size Distribution
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Roberto N.
+ Fattal Jaef
+\end_layout
+
+\begin_layout Section
+Data Availability
+\end_layout
+
+\begin_layout Standard
+The data for this project is composed of the various firm-level databases,
+ the Penn World Tables for aggregate data, the Doing Business Indicators
+ for the regulation based barriers to entry, and the Small Business Administrati
+on for inferring the US's distribution of firm shares across 2 digit industries.
+ Software requirements for replication are specified in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Software-Requirements"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Repository number: AEA Project openICPSR-123043
+\end_layout
+
+\begin_layout Subsection
+Penn World Tables
+\end_layout
+
+\begin_layout Standard
+The paper uses data from the Penn World Tables version 9.0 (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "Feenstra"
+literal "false"
+
+\end_inset
+
+).
+ Data can be downloaded from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "pwt90package"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The subset of data from Penn World Tables 9.0 utilized in the project is
+ recorded in the following files
+\end_layout
+
+\begin_layout Enumerate
+GDP_percapita_sector_analysis.csv for the real GDP per capita in the year
+ 2014 for the 21 countries in the sample
+\end_layout
+
+\begin_layout Enumerate
+ctfp_pwt.dat for the PPP based measure of TFP in the year 2014 for the 21
+ countries in the sample
+\end_layout
+
+\begin_layout Enumerate
+pwt90_gdp_kstock.csv allows to compute TFP for the countries for which the
+ Penn World Table's own computation of PPP based TFP is missing.
+ As stated in the manuscript, in countries with missing data the TFP was
+ computed as 
+\begin_inset Formula $\frac{Y}{K^{1/3}L^{2/3}}$
+\end_inset
+
+, using 
+\begin_inset Formula $rgdpna$
+\end_inset
+
+ as the real GDP, 
+\begin_inset Formula $rkna$
+\end_inset
+
+ as the real capital stock, and 
+\begin_inset Formula $emp$
+\end_inset
+
+ as the labor input.
+\end_layout
+
+\begin_layout Enumerate
+pwt_labshare_2014.csv allows to transform the World Bank's Doing Business
+ Indicator's cost of starting a firm in model equivalent units (see below)
+\end_layout
+
+\begin_layout Standard
+The first first file was created straight from the PWT's excel sheet, defining
+ GDP per capita as 
+\begin_inset Formula $\frac{rgdpna}{pop}$
+\end_inset
+
+, and filtering countries to keep only the 21 countries under study in the
+ paper.
+ Similarly, the third and forth files are also filtered from the original
+ PWT databse.
+ The second file, in turn, was created from the following 
+\begin_inset Formula $R$
+\end_inset
+
+ code
+\end_layout
+
+\begin_layout Itemize
+explore_ctfp_pwt.R
+\end_layout
+
+\begin_layout Subsection
+World Bank's Doing Business Indicators
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:DBI"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The World Bank's Doing Business Indicators' (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "WBdoingbusiness"
+literal "false"
+
+\end_inset
+
+) cost of starting a firm are reported in the following files:
+\end_layout
+
+\begin_layout Enumerate
+Entry_Costs_sector_analysis.csv reports the costs of starting a firm and
+ the cost of accessing electricity in the year 2014, as proportion of GDP
+ per capita, for the 21 countries in the sample
+\end_layout
+
+\begin_layout Enumerate
+db_indicator_laborunits.txt reports these entry costs, translated into model-equi
+valent entry costs in units of labor, as explained in the manuscript.
+\end_layout
+
+\begin_layout Standard
+The first file was constructed simply by filtering the full database by
+ country in the year 2014, and selecting the 21 countries under study in
+ the paper.
+ Then, across all doing business metrics, we select the ones for the constructio
+n of the costs of starting a formal firm, given by:
+\end_layout
+
+\begin_layout Itemize
+cost of starting a business, as % of income per capita, labeled start_gdp
+ in the replication file
+\end_layout
+
+\begin_layout Itemize
+cost of getting electricity as % of income per capita, labeled electr_gdp
+ in the replication file.
+\end_layout
+
+\begin_layout Itemize
+totalec_gdp in the replication file is simply the addition of the above
+ to elements
+\end_layout
+
+\begin_layout Standard
+The second file was constructed with the following 
+\begin_inset Formula $R$
+\end_inset
+
+code:
+\end_layout
+
+\begin_layout Itemize
+explore_db_laborunits.R
+\end_layout
+
+\begin_layout Subsection
+Small Business Administration, NAICS-ISIC rev3.
+ Crosswalk, and ISIC rev.4 to ISIC rev3 Crosswalk
+\end_layout
+
+\begin_layout Standard
+The file with 2007's data from the Small Business Administration 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "SBA"
+literal "false"
+
+\end_inset
+
+, used for the computation of firm-shares in the U.S., which act as ingredient
+ for the aggregation of average firm size across countries controlling for
+ industrial composition, is provided in the above-mentioned repository.
+ The data can be downloaded from: https://www.sba.gov/node/12162., under U.S.
+ static data, detailed industry data NAICS2002.
+\end_layout
+
+\begin_layout Standard
+The R-file producing such computation of firm-shares is
+\end_layout
+
+\begin_layout Itemize
+construct_small_business_administration.R
+\end_layout
+
+\begin_layout Standard
+which uses the following table to convert from NAICS to ISIC revision 3
+ industry classification codes:
+\end_layout
+
+\begin_layout Itemize
+2002 NAICS_to_ISIC_rev3.csv
+\end_layout
+
+\begin_layout Standard
+The NAICS 2002 to ISIC revision 3 conversion table can be downloaded from
+ the U.S.Census Bureau's website, https://www.census.gov/eos/www/naics/concordances/
+concordances.html.
+\end_layout
+
+\begin_layout Standard
+Running the 
+\begin_inset Formula $R$
+\end_inset
+
+ file creates the following file:
+\end_layout
+
+\begin_layout Itemize
+Manufacturing_Data_2digit_ISIC31.csv
+\end_layout
+
+\begin_layout Standard
+which is then loaded by subsequent files for the computation of average
+ firm sizes (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Analysis-Data-Files"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+In some countries, the firm level data classifies industries according to
+ ISIC revision 4.
+ To convert the US's average firm size across 2 digit industries from ISIC
+ revision 3 to ISIC revision 4, I provide the following file
+\end_layout
+
+\begin_layout Itemize
+manufacturing_2digit_analysis.R
+\end_layout
+
+\begin_layout Standard
+which uses the following conversion table at the 2-digit level
+\end_layout
+
+\begin_layout Itemize
+ISIC31_to_ISIC4_2digits.csv
+\end_layout
+
+\begin_layout Standard
+also downloadable from the United Nation's Statistic Division, https://unstats.un.
+org/unsd/classifications/Econ/ISIC.cshtml
+\end_layout
+
+\begin_layout Subsection
+Firm-Level Databases
+\end_layout
+
+\begin_layout Standard
+The firm level databases are composed of commercial, confidential, and publicly
+ accessible sources.
+ The commercial database is AMADEUS, which is developed by Bureau Van Dijk
+ (
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "AMADEUS"
+literal "false"
+
+\end_inset
+
+).
+ These can be purchased from the developer or accessed through an affiliation
+ with an institution with an active membership to the data.
+ As explained in the data appendix of the article, the countries selected
+ from AMADEUS for the analysis are: Bulgaria, Belgium, Finland, Portugal,
+ Spain, Latvia, France, Hungary, Romania, and Italy.
+\end_layout
+
+\begin_layout Standard
+There are a number of firm-level censuses whose access is confidential,
+ due to agreements between the corresponding statistical agencies and the
+ World Bank.
+ The firm-level Censuses in this category are: El Salvador (2005) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "ElSalvador"
+literal "false"
+
+\end_inset
+
+, Kenya (2010) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Kenya"
+literal "false"
+
+\end_inset
+
+, Ethiopia (2010) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Ethiopia"
+literal "false"
+
+\end_inset
+
+, Ghana (2003) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Ghana"
+literal "false"
+
+\end_inset
+
+, Peru (2008) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Peru"
+literal "false"
+
+\end_inset
+
+, Pakistan (2005) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Pakistan"
+literal "false"
+
+\end_inset
+
+, Bangladesh (2012) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Bangladesh"
+literal "false"
+
+\end_inset
+
+, and Malaysia (2015) 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "Malaysia"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The remaining firm-level datasets are freely accessible from the countries'
+ statistical agency websites.
+ These are:
+\end_layout
+
+\begin_layout Itemize
+Colombia's Annual Manufacturing Survey for 2016 (
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "DANE_colombia"
+literal "false"
+
+\end_inset
+
+),
+\size scriptsize
+http://microdatos.dane.gov.co/index.php/catalog/MICRODATOS/about_collection/6/2
+\end_layout
+
+\begin_layout Itemize
+Chile's Manufacturing Survey for 2013 (
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "ENIA_chile"
+literal "false"
+
+\end_inset
+
+), accessible at 
+\size footnotesize
+https://datosabiertos.ine.cl/developers/
+\end_layout
+
+\begin_layout Itemize
+India's Annual Survey of Industry for 2005 (
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "ASI_india"
+literal "false"
+
+\end_inset
+
+), accessible at 
+\size footnotesize
+http://microdata.gov.in/nada43/index.php/catalog/ASI
+\size default
+.
+ While access is unrestricted, users are required to create and register
+ an account with Central Statistics Office.
+\end_layout
+
+\begin_layout Standard
+In addition to the raw firm level data, some of which are accessible and
+ some are not, the replication repository offers all the aggregate statistics
+ computed from the firm-level data that are necessary for the inference
+ of entry barriers and computation of counterfactuals.
+ Hence, readers should be able to replicate the results, given these inputs,
+ from the computational codes described later.
+ More information on data sources can be found in the Data Appendix of the
+ manuscript.
+\end_layout
+
+\begin_layout Section
+Quantitative Analysis
+\end_layout
+
+\begin_layout Standard
+There are two main files for the computation of the numerical exercises.
+ The first one identifies the model-based entry barrier and computes allocations
+ under various combinations of distortions (that is, undistorted, distorted
+ with both distortions, and distorted with one distortion and a time).
+ The second one solves the same allocations but adopting the World Bank's
+ Doing Business Indicator's measure of entry barriers, translated into model-equ
+ivalent labor units.
+ A third file is provided for the simulation of the life-cycle dynamics
+ of firms
+\end_layout
+
+\begin_layout Subsection
+Baseline Quantitative results
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Baseline-Quantitative-results"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The file performing the identification of entry barriers is the following:
+\end_layout
+
+\begin_layout Itemize
+master_avs10_ind_weighted_reg_tr5.f90
+\end_layout
+
+\begin_layout Standard
+The file is compiled using gfortran, the GNU Fortran compiler for Linux
+ distributions
+\end_layout
+
+\begin_layout Standard
+As inputs to the computation, the files loads the average firm size across
+ countries and the WLS regression coefficient between 
+\begin_inset Formula $log\left(TFPR\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $log\left(TFPQ\right)$
+\end_inset
+
+.
+ The files containing this information are
+\end_layout
+
+\begin_layout Itemize
+avsize10_usa_weight.txt
+\end_layout
+
+\begin_layout Itemize
+regcoeff_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Standard
+As said, the average firm size is computed conditional on the sample of
+ 10+ worker firms in each country.
+ Furthermore 2 digit average firm sizes are aggregated, within each country,
+ according to the US distribution of firms across 2-digit industries, as
+ explain in the manuscript.
+\end_layout
+
+\begin_layout Standard
+The slope of the idiosyncratic distortion profile is given by the WLS estimate
+ of the regression between 
+\begin_inset Formula $log\left(TFPR\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $log\left(TFPQ\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $TFPR$
+\end_inset
+
+ and 
+\begin_inset Formula $TFPQ$
+\end_inset
+
+ are demeaned by their respective 4-digit averages.
+ Furthermore, prior to the regression, the tails of the distribution of
+ 
+\begin_inset Formula $TFPR$
+\end_inset
+
+ and 
+\begin_inset Formula $TFPQ$
+\end_inset
+
+ are trimmed at the 5%
+\end_layout
+
+\begin_layout Subsection
+Quantitative Results under World Bank's Doing Business Indicators' Entry
+ Barrier
+\end_layout
+
+\begin_layout Standard
+A similar code solves the equilibrium allocations under the various combination
+ of distortions imputing the entry barrier from the World Bank's Doing Business
+ Indicators.
+ The file is the following:
+\end_layout
+
+\begin_layout Itemize
+master_avs10_ind_weighted_reg_tr5_dbindicator.f90
+\end_layout
+
+\begin_layout Standard
+The file is compiled using gfortran, the GNU Fortran compiler for Linux
+ distributions
+\end_layout
+
+\begin_layout Standard
+To get at a model equivalent entry cost from the Doing Business Indicator
+ (DBI), we proceed as follows.
+ We start by adding the total cost of starting a firm and acquiring electricity
+ as a proportion of income per capita from the Doing Business Database,
+ 
+\begin_inset Formula $DB=\frac{\left(Start+Electricity\right)}{\left(Y/L\right)}$
+\end_inset
+
+ .
+ Multiplying the DBI by the inverse of the labor share, which we take from
+ the Penn World Table version 9.0, we get the level of the cost of entry
+ in units of labor: 
+\begin_inset Formula $DB^{L}=\left(\frac{start+electricity}{Y/L}\right)*\frac{Y}{w*L}=\left(\frac{start+electricity}{W}\right)$
+\end_inset
+
+.
+ Expressed in this fashion, the Doing Business’s cost of entry is comparable
+ to 
+\begin_inset Formula $f_{e}\tau^{e}$
+\end_inset
+
+ in the model.
+ Thus, to isolate the Doing Business counterpart of 
+\begin_inset Formula $\tau^{E}$
+\end_inset
+
+, we divide 
+\begin_inset Formula $DB^{L}$
+\end_inset
+
+ by the calibrated value of the technological component of the cost of entry,
+ 
+\begin_inset Formula $f_{e}$
+\end_inset
+
+ ( i.e.
+ 
+\begin_inset Formula $\tau_{DB}^{E}=\frac{DB^{L}}{f_{e}}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The file collecting the DBI's cost of starting a firm in units of labor,which
+ is loaded by the Fortran file, is given by
+\end_layout
+
+\begin_layout Itemize
+db_indicator_laborunits.txt
+\end_layout
+
+\begin_layout Subsection
+Simulation of Life-Cycle Dynamics of Employment
+\end_layout
+
+\begin_layout Standard
+Figure 7 in the manuscript reports the life-cycle dynamics of employment
+ for a subset of countries in the sample.
+ These life-cycles are first simulated using the following Fortran file:
+\end_layout
+
+\begin_layout Itemize
+life_cycles_weighted_reg_tr5.f90
+\end_layout
+
+\begin_layout Standard
+This program loads the productivity, employment, and innovation profiles
+ across productivity levels across countries, under their given pair of
+ distortions, generated in the master Fortran Program.
+ These files are provided to the reader in the following files:
+\end_layout
+
+\begin_layout Itemize
+Innovation probability for each productivity level: innovdist_weighted_reg_tr5.tx
+t
+\end_layout
+
+\begin_layout Itemize
+Total labor demand for each productivity level: emptotdist_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Itemize
+Mass of firms in each productivity level: massdist_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Itemize
+Production labor demand for each productivity level: lpdist_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Standard
+The outcome from the Fortran files that are loaded by the R-file are:
+\end_layout
+
+\begin_layout Itemize
+LdAWeightedRegTr5.pc
+\end_layout
+
+\begin_layout Itemize
+LdAFlessAvs10ind.pc
+\end_layout
+
+\begin_layout Standard
+These files are in turn loaded by replication_figures.R
+\end_layout
+
+\begin_layout Section
+Analysis Data Files
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Analysis-Data-Files"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The replication repository provides a series of files that are loaded in
+ the process of constructing the figures in the manuscript.
+\end_layout
+
+\begin_layout Subsection
+Average Firm Size Weighted by US's Shares of Firms across 2 Digit Industries
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Average-Firm-Size"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The average firm size across countries, constructed as dictated by equation
+ 17 in the article, are reported in the following file:
+\end_layout
+
+\begin_layout Itemize
+Av_Size_bySector_All_short_WeightedReg_tr5.csv
+\end_layout
+
+\begin_layout Standard
+Because the firm-level data that allows for the computation of average firm
+ size is to a large extent confidential, I provide the 
+\begin_inset Formula $R$
+\end_inset
+
+ code that computes the average firm size for one of the countries where
+ the firm-level data is publicly available, Chile.
+\end_layout
+
+\begin_layout Standard
+The firm-level analysis in Chile is performed in the following file:
+\end_layout
+
+\begin_layout Itemize
+firm_analysis_chile.R
+\end_layout
+
+\begin_layout Standard
+For running the firm analysis in Chile, the reader must
+\end_layout
+
+\begin_layout Enumerate
+Download the firm-level data from the official sources, as explained above.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Run construct_small_business_administration.R to compute average firm sizes
+ in the US across 2 digit manufacturing industries classified according
+ to ISIC rev3
+\end_layout
+
+\begin_layout Enumerate
+Run manufacturing_2digit_analysis.R to convert the average size distribution
+ from the ISIC rev3 classficiation to ISIC rev 4
+\end_layout
+
+\begin_layout Enumerate
+Run firm_analysis_chile.R
+\end_layout
+
+\begin_layout Subsection
+Regression Coefficient 
+\begin_inset Formula $log\left(TFPR\right)-log\left(TFPQ\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The employment-weighted least squares regression coefficients of 
+\begin_inset Formula $log\left(TFPR\right)$
+\end_inset
+
+ against 
+\begin_inset Formula $log\left(TFPQ\right)$
+\end_inset
+
+ are stored in the following file:
+\end_layout
+
+\begin_layout Itemize
+RegCoeffs_by_Country_WeightedReg_tr5.csv
+\end_layout
+
+\begin_layout Standard
+Again, using Chile as example, the 
+\begin_inset Formula $R$
+\end_inset
+
+ program just described for the computation of the average firm sizes also
+ performs the derivation of the idiosyncratic distortions, following Hsieh
+ and Klenow (2009)'s methodology 
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "HsiehKlenow2009"
+literal "false"
+
+\end_inset
+
+, and estimates the WLS regression.
+\end_layout
+
+\begin_layout Subsection
+Employment Histograms of Firm Size Distribution
+\end_layout
+
+\begin_layout Standard
+As validating evidence for the mechanisms in the model, figure 3 in the
+ article shows the share of firms with 250 workers or more across countries
+ in the sample.
+ Continuing with Chile as example of program that allows to replicate the
+ construction of the cumulative distribution function from which the shares
+ are computed, the repository provides the following file for replication:
+\end_layout
+
+\begin_layout Itemize
+employment_histograms_chile.R
+\end_layout
+
+\begin_layout Standard
+This R-file constructs histograms of the firm size distribution with employment
+ bins that are comparable to the bins reported in the Small Business Administrat
+ion and the Business Dynamics Statistics databases.
+ After constructing the cumulative distribution functions corresponding
+ to the size bins, the file then computes the share of firms with 250 workers
+ or more.
+ The output of this computation, applied to the Census-based and Amadeus-based
+ databases, which are in turn taken as ingredients in the replication_figures.R
+ file for the construction of figure 3, are the following:
+\end_layout
+
+\begin_layout Itemize
+Mshare250censuses.txt
+\end_layout
+
+\begin_layout Itemize
+Mshare250amadeus.txt
+\end_layout
+
+\begin_layout Standard
+While the raw firm-level data is not provided in the replication repository,
+ these text files are, and hence the reader should be able to replicate
+ the corresponding figure.
+\end_layout
+
+\begin_layout Subsection
+Ingredients for Fortran Programs
+\end_layout
+
+\begin_layout Standard
+A number of files provided in the repository act as inputs to be loaded
+ by the Fortran programs that compute the various counterfactuals in the
+ model.
+\end_layout
+
+\begin_layout Standard
+These are:
+\end_layout
+
+\begin_layout Enumerate
+avsize10_usa_weight.txt, the average firm size across countries 
+\end_layout
+
+\begin_layout Enumerate
+regcoeff_weighted_reg_tr5.txt, the 
+\begin_inset Formula $log(TFPR)-log\left(TFPQ\right)$
+\end_inset
+
+ regression coefficients
+\end_layout
+
+\begin_layout Enumerate
+db_indicator_laborunits.txt, the World Bank's cost of starting a firm translated
+ into model equivalent units, as explained in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:DBI"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first two files contain information that was reported section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Average-Firm-Size"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, but are presented in a separate txt file of ease of access by the correspondin
+g Fortran programs.
+ Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Baseline-Quantitative-results"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ provides more details.
+\end_layout
+
+\begin_layout Subsection
+Output from Fortran Programs
+\end_layout
+
+\begin_layout Standard
+The following list of files collect the results from the Fortran programs
+ that are used for the creation of the figures in the paper (more on this
+ below).
+ The output files are:
+\end_layout
+
+\begin_layout Enumerate
+ResMasterAvs10indWeightedRegTr5.dat
+\end_layout
+
+\begin_layout Enumerate
+dist_weighted_reg_tr5_DB.txt
+\end_layout
+
+\begin_layout Enumerate
+res_db_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Enumerate
+resgains_db_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Enumerate
+LdAWeightedRegTr5.pc
+\end_layout
+
+\begin_layout Enumerate
+LdAFlessAvs10ind.pc
+\end_layout
+
+\begin_layout Standard
+File number 1 is the main output file from the Fortran programs that compute
+ the undistorted stationary equilibrium, the distorted equilibrium with
+ both model-based entry barriers and idiosyncratic distortions, the distorted
+ equilibrium with idiosyncratic distortions only, and the distorted equilibrium
+ with model-based entry barriers only.
+\end_layout
+
+\begin_layout Standard
+File number 2 is the output file from the Fortran program that solves the
+ distorted equilibrium with World Bank's Doing Business Indicators cost
+ of starting a firm and idiosyncratic distortions.
+\end_layout
+
+\begin_layout Standard
+File number 3 presents the TFP gains from removing both the World Bank's
+ entry barriers and the idiosyncratic distortion, from removing the entry
+ barrier only, and from removing the idiosyncratic distortion only.
+\end_layout
+
+\begin_layout Standard
+File number 4 presents the same information as file number 3, as well as
+ the gains from removing each distortion assuming there other distortion
+ is set to zero.
+\end_layout
+
+\begin_layout Standard
+Files 5 and 6 are the output from the Fortran program that computes the
+ life-cycle employment dynamics of firms under every country's estimates
+ of distortions.
+\end_layout
+
+\begin_layout Section
+Figures
+\end_layout
+
+\begin_layout Standard
+Lastly, the replication materials provide a file for the creation of all
+ the figures reported in the paper.
+ The file name is the following:
+\end_layout
+
+\begin_layout Itemize
+replication_figures.R
+\end_layout
+
+\begin_layout Standard
+The file is was created in 
+\begin_inset Formula $R-Studio$
+\end_inset
+
+ Version 1.0.153 for Linux.
+ Required libraries are declared at the beginning of the file.
+\end_layout
+
+\begin_layout Standard
+All the input files that are loaded for the construction of the figures
+ are provided as part of the replication materials.
+\end_layout
+
+\begin_layout Section
+Software Requirements
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Software-Requirements"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R$
+\end_inset
+
+ version 3.6.3 (2020-02-29) -- "Holding the Windsock" Copyright (C) 2020 The
+ R Foundation for Statistical Computing Platform: x86_64-pc-linux-gnu (64-bit).
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R-Studio$
+\end_inset
+
+ Version 1.0.153 – © 2009-2017 RStudio, Inc.
+ Required libraries are declared at the beginning of the file, and can be
+ installed through the R-studio interface
+\end_layout
+
+\begin_layout Itemize
+Fortran compiler: GNU Fortran (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0 Copyright
+ (C) 2019 Free Software Foundation, Inc.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R$
+\end_inset
+
+ libraries can be downloaded running the global-libraries.R file, provided
+ in the repository, or through the 
+\begin_inset Formula $R-studio$
+\end_inset
+
+ interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "JMPref"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

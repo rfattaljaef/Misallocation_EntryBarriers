@@ -1,0 +1,331 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 3cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Data and Code Material for 
+\begin_inset Quotes eld
+\end_inset
+
+Entry Barriers, Idiosyncratic Distortions, and the Firm Size Distribution
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Roberto N.
+ Fattal Jaef
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+In this note I describe the content of the replication materials to reproduce
+ quantitative results and recreate figures in the published manuscript.
+ The raw firm-level data cannot be disclosed, but I shall provide the relevant
+ statistics that are used in the computation of the various numerical exercises.
+ These statistics are loaded by the computation files and are used as ingredient
+s for the identification of entry barriers and the implementation of counterfact
+uals.
+\end_layout
+
+\begin_layout Standard
+The replication materials are composed of three main files that compute
+ the equilibrium allocations and create the figures illustrating the results:
+\end_layout
+
+\begin_layout Itemize
+master_avs10_ind_weighted_reg_tr5.f90
+\end_layout
+
+\begin_layout Itemize
+master_avs10_ind_weighted_reg_tr5_dbindicator.f90
+\end_layout
+
+\begin_layout Itemize
+replication_figures.R
+\end_layout
+
+\begin_layout Standard
+Below, I explain the use of each file.
+\end_layout
+
+\begin_layout Section
+Quantitative Analysis
+\end_layout
+
+\begin_layout Standard
+There are two main files for the computation of the numerical exercises.
+ The first one identifies the model-based entry barrier and computes allocations
+ under various combinations of distortions (that is, undistorted, distorted
+ with both distortions, and distorted with one distortion and a time).
+ The second one solves the same allocations but adopting the World Bank's
+ Doing Business Indicator's measure of entry barriers, translated into model-equ
+ivalent labor units.
+\end_layout
+
+\begin_layout Subsection
+Baseline Quantitative results
+\end_layout
+
+\begin_layout Standard
+The file performing the identification of entry barriers is the following:
+\end_layout
+
+\begin_layout Itemize
+master_avs10_ind_weighted_reg_tr5.f90
+\end_layout
+
+\begin_layout Standard
+The file is compiled using Gfortran, the GNU Fortran compiler for Linux
+ distributions
+\end_layout
+
+\begin_layout Standard
+As inputs to the computation, the files loads the average firm size across
+ countries and the WLS regression coefficient between 
+\begin_inset Formula $log\left(TFPR\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $log\left(TFPQ\right)$
+\end_inset
+
+.
+ The files containing this information are
+\end_layout
+
+\begin_layout Itemize
+avsize10_usa_weight.txt
+\end_layout
+
+\begin_layout Itemize
+regcoeff_weighted_reg_tr5.txt
+\end_layout
+
+\begin_layout Standard
+As said, the average firm size is computed conditional on the sample of
+ 10+ worker firms in each country.
+ Furthermore 2 digit average firm sizes are aggregated, within each country,
+ according to the US distribution of firms across 2-digit industries, as
+ explain in the manuscript.
+\end_layout
+
+\begin_layout Standard
+The slope of the idiosyncratic distortion profile is given by the WLS estimate
+ of the regression between 
+\begin_inset Formula $log\left(TFPR\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $log\left(TFPQ\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $TFPR$
+\end_inset
+
+ and 
+\begin_inset Formula $TFPQ$
+\end_inset
+
+ are demeaned by their respective 4-digit averages.
+ Furthermore, prior to the regression, the tails of the distribution of
+ 
+\begin_inset Formula $TFPR$
+\end_inset
+
+ and 
+\begin_inset Formula $TFPQ$
+\end_inset
+
+ are trimmed at the 5%
+\end_layout
+
+\begin_layout Subsection
+Quantitative Results under World Bank's Doing Business Indicators' Entry
+ Barrier
+\end_layout
+
+\begin_layout Standard
+A similar code solves the equilibrium allocations under the various combination
+ of distortions inputing the entry barrier from the World Bank's Doing Business
+ Indicators.
+ The file is the following:
+\end_layout
+
+\begin_layout Itemize
+master_avs10_ind_weighted_reg_tr5_dbindicator.f90
+\end_layout
+
+\begin_layout Standard
+The file is compiled using Gfortran, the GNU Fortran compiler for Linux
+ distributions
+\end_layout
+
+\begin_layout Standard
+To get at a model equivalent entry cost from the Doing Business Indicator
+ (DBI), we proceed as follows.
+ We start by adding the total cost of starting a firm and acquiring electricity
+ as a proportion of income per capita from the Doing Business Database,
+ 
+\begin_inset Formula $DB=\frac{\left(Start+Electricity\right)}{\left(Y/L\right)}$
+\end_inset
+
+ .
+ Multiplying the DBI by the inverse of the labor share, which we take from
+ the Penn World Table version 9.0, we get the level of the cost of entry
+ in units of labor: 
+\begin_inset Formula $DB^{L}=\left(\frac{start+electricity}{Y/L}\right)*\frac{Y}{w*L}=\left(\frac{start+electricity}{W}\right)$
+\end_inset
+
+.
+ Expressed in this fashion, the Doing Business’s cost of entry is comparable
+ to 
+\begin_inset Formula $f_{e}\tau^{e}$
+\end_inset
+
+ in the model.
+ Thus, to isolate the Doing Business counterpart of 
+\begin_inset Formula $\tau^{E}$
+\end_inset
+
+, we divide 
+\begin_inset Formula $DB^{L}$
+\end_inset
+
+ by the calibrated value of the technological component of the cost of entry,
+ 
+\begin_inset Formula $f_{e}$
+\end_inset
+
+ ( i.e.
+ 
+\begin_inset Formula $\tau_{DB}^{E}=\frac{DB^{L}}{f_{e}}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The file collecting the DBI's cost of starting a firm in units of labor,which
+ is loaded by the Fortran file, is given by
+\end_layout
+
+\begin_layout Itemize
+db_indicator_laborunits.txt
+\end_layout
+
+\begin_layout Section
+Figures
+\end_layout
+
+\begin_layout Standard
+Lastly, the replication materials provide a file for the creation of all
+ the figures reported in the paper.
+ The file name is the following:
+\end_layout
+
+\begin_layout Itemize
+replication_figures.R
+\end_layout
+
+\begin_layout Standard
+The file is was created in 
+\begin_inset Formula $R-Studio$
+\end_inset
+
+ Version 1.0.153 for Linux.
+ Required libraries are declared at the beginning of the file.
+\end_layout
+
+\begin_layout Standard
+All the input files that are loaded for the construction of the figures
+ are provided as part of the replication materials.
+\end_layout
+
+\end_body
+\end_document
